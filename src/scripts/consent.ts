@@ -37,6 +37,16 @@ export function consentState(): "granted" | "denied" | "unavailable" {
   }
 }
 
+/** Visitor identification (Snitcher) maps to CookieYes "advertisement", the
+    category GTM gates on ad_storage. Missing or unreadable means no. */
+export function hasMarketingConsent(): boolean {
+  try {
+    return window.getCkyConsent?.().categories?.advertisement === true;
+  } catch {
+    return false;
+  }
+}
+
 /** A missing or unreadable consent decision never grants analytics consent. */
 export function hasAnalyticsConsent(): boolean {
   try {

@@ -6,7 +6,7 @@
  * astro:page-load; the flow activates only on home and only once per session.
  */
 import { trackError, trackOps } from "./analytics.ts";
-import { consentState } from "./consent.ts";
+import { consentState, hasMarketingConsent } from "./consent.ts";
 import { mount, type BarHandle, type BarKind, type Sheet } from "./teletype.ts";
 import { dataPoints } from "../lib/brief/facts.ts";
 import type { Briefing } from "../lib/brief/interpret.ts";
@@ -436,12 +436,13 @@ function injectSnitcher() {
   document.head.appendChild(el);
 }
 
-/** Wait briefly for GTM, then load Snitcher directly if needed.
-    Visitor identification starts independently of CookieYes initialization. */
-async function ensureTracker(s: AbortSignal): Promise<"gtm" | "injected"> {
+/** Wait briefly for GTM, then load Snitcher directly if needed. Only with
+    advertisement consent: without it the run falls back to the self brief. */
+async function ensureTracker(s: AbortSignal): Promise<"gtm" | "injected" | "no_consent"> {
   const deadline = Date.now() + 4000;
   while (!window.Snitcher && Date.now() < deadline) await zleep(100, s);
   if (window.Snitcher) return "gtm";
+  if (!hasMarketingConsent()) return "no_consent";
   injectSnitcher();
   return "injected";
 }
