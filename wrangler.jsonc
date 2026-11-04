@@ -10,7 +10,10 @@
 	"assets": {
 		"directory": "./dist",
 		"binding": "ASSETS",
-		"run_worker_first": ["/*", "!/_astro/*"]
+		// Legacy paths in public/_redirects are excluded so the asset layer
+		// answers them with their 301s; a Worker-first request would get the
+		// target's content with a 200 instead. Keep in sync with src/worker.ts.
+		"run_worker_first": ["/*", "!/_astro/*", "!/tools", "!/tools/*", "!/admin", "!/admin/*", "!/work", "!/work/*", "!/blog", "!/blog/*", "!/about", "!/contact", "!/faq", "!/pricing", "!/login", "!/signup", "!/privacy", "!/lab", "!/lab/", "!/experiments", "!/experiments/", "!/published", "!/published/", "!/gtm", "!/gtm/"]
 	},
 	// Brief cache, rate limit and Exa spend counter (src/pages/api/brief.ts).
 	// Same namespace the Pages project bound, so cached briefs carry over.
