@@ -29,3 +29,8 @@ Consult these guides before working on related tasks:
 - Old site content (source of truth for legacy copy and press): `~/Developer/_archive/andorlabs-site-old/content/pages/*.json`. `portfolio.json` holds 9 bylines, 8 earned media, 7 research citations, author archives, projects and investments. Check it before calling any content missing.
 - Analytics: GTM container GTM-MFGN59WT is injected at the Cloudflare edge (not in the Astro source); it loads PostHog (default project), Snitcher and CookieYes. `src/scripts/analytics.ts` switches on PostHog exception autocapture + dead clicks once GTM has loaded the SDK, and `trackOps()` sends operational events. The home brief emits one `brief_run` per run (kind, trigger, consent, snitcher, stage, outcome, http, exa/jev, timings; no visitor identifiers) plus `brief_restored`; failures also go to Error Tracking via `captureException`.
 - Production deploy: `npm run deploy` from `main`.
+
+<!-- routingcat -->
+This site uses RoutingCat to try page variants, route visitors between them and measure conversions.
+Before working on the site's conversion, its experiments or results, `routingcat/`, `routingcat.config`, its slot markup, or any `track` or `identify` call, read `.agents/skills/routingcat/SKILL.md` and the file it names for the site's stack; `npx routingcat docs <page>` prints the docs for the site's version, also in `node_modules/routingcat/docs/` where the package is installed.
+<!-- /routingcat -->

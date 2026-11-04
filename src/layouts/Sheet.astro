@@ -7,6 +7,7 @@ import Briefing from "../components/Briefing.astro";
 import Cta from "../components/Cta.astro";
 import Icon from "../components/Icon.astro";
 import { book, MENU, SITE, SOCIALS, tone, type Color, type Fig } from "../data/site";
+import { RoutingCat } from "routingcat/astro/components";
 
 interface Props {
   title?: string;
@@ -29,6 +30,7 @@ const isHome = Astro.url.pathname === "/";
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <RoutingCat />
   <meta name="theme-color" content="#1b4dff" />
   <title>{fullTitle}</title>
   <meta name="description" content={description} />
@@ -86,6 +88,7 @@ const isHome = Astro.url.pathname === "/";
   <script>
     import "../scripts/site.ts";
     import "../scripts/briefing.ts";
+    import "../scripts/conversions.ts";
     if (import.meta.env.DEV) import("../scripts/agentation-dev");
   </script>
 </body>

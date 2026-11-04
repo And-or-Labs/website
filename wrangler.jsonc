@@ -6,10 +6,11 @@
 	"name": "andorlabs",
 	"compatibility_date": "2026-11-01",
 	"compatibility_flags": ["global_fetch_strictly_public"],
-	"main": "@astrojs/cloudflare/entrypoints/server",
+	"main": "src/worker.ts",
 	"assets": {
 		"directory": "./dist",
-		"binding": "ASSETS"
+		"binding": "ASSETS",
+		"run_worker_first": ["/*", "!/_astro/*"]
 	},
 	// Brief cache, rate limit and Exa spend counter (src/pages/api/brief.ts).
 	// Same namespace the Pages project bound, so cached briefs carry over.
@@ -22,5 +23,6 @@
 	],
 	"observability": {
 		"enabled": true
-	}
+	},
+	"version_metadata": { "binding": "CF_VERSION_METADATA" }
 }
