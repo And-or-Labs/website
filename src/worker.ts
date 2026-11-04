@@ -17,6 +17,6 @@ export default worker(app, {
   framework: ASTRO_DESCRIPTOR,
   // The same literal as run_worker_first in the Wrangler configuration:
   // every path except built assets and the legacy redirects in public/_redirects.
-  matcher: ['/*', '!/_astro/*', '!/tools', '!/tools/*', '!/admin', '!/admin/*', '!/work', '!/work/*', '!/blog', '!/blog/*', '!/about', '!/contact', '!/faq', '!/pricing', '!/login', '!/signup', '!/privacy', '!/lab', '!/lab/', '!/experiments', '!/experiments/', '!/published', '!/published/', '!/gtm', '!/gtm/'],
+  matcher: ['/*', '!/_astro/*', '!/tools', '!/tools/*', '!/admin', '!/admin/*', '!/work', '!/work/*', '!/blog', '!/notes/rss.xml', '!/blog/*', '!/about', '!/contact', '!/faq', '!/pricing', '!/login', '!/signup', '!/privacy', '!/lab', '!/lab/', '!/experiments', '!/experiments/', '!/published', '!/published/', '!/gtm', '!/gtm/'],
   build,
 })
