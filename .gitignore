@@ -19,7 +19,7 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
-# Pages Function secrets for `wrangler pages dev` — real keys, never committed.
+# Worker secrets for `astro dev` (workerd) — real keys, never committed.
 .dev.vars
 .dev.vars.*
 # wrangler's local state (contains a cache of bindings)

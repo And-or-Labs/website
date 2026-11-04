@@ -1,8 +1,9 @@
 /**
  * POST /api/subscribe — newsletter signup, forwarded to Loops.
  *
- * This is a Cloudflare Pages Function. It exists because the form must not ship
- * the API key to the browser: the key is a Pages *secret*, readable only here.
+ * An on-demand Astro route on the andorlabs Worker. It exists because the form
+ * must not ship the API key to the browser: the key is a Worker *secret*,
+ * readable only here.
  *
  * A previous version of this endpoint (against Beehiiv) was only ever created
  * by hand in the Cloudflare dashboard and never committed, so it was invisible
@@ -10,13 +11,13 @@
  * now.
  *
  * Set the secret before this can succeed:
- *   Cloudflare dashboard → Pages → andorlabs → Settings → Variables and Secrets
- *   LOOPS_API_KEY = <key from loops.so → Settings → API>
+ *   npx wrangler secret put LOOPS_API_KEY   (key from loops.so → Settings → API)
  */
+import type { APIRoute } from "astro";
+import { env } from "cloudflare:workers";
 
-interface Env {
-  LOOPS_API_KEY?: string;
-}
+// The rest of the site is prerendered; this route runs per request.
+export const prerender = false;
 
 const LOOPS_ENDPOINT = "https://app.loops.so/api/v1/contacts/create";
 
@@ -40,10 +41,9 @@ const LIST_BY_CATEGORY: Record<string, string> = {
 };
 
 /**
- * Duplicated from `src/lib/categories.ts` on purpose. Pages Functions are
- * bundled separately from the Astro build, and whether an import from `src/`
- * resolves here is not something to discover at deploy time. If you change the
- * ids in one file, change them in the other.
+ * Duplicated from `src/lib/categories.ts` when this was a Pages Function
+ * bundled apart from Astro. If you change the ids in one file, change them in
+ * the other.
  */
 const ALL_LISTS = Object.values(LIST_BY_CATEGORY);
 
@@ -68,7 +68,7 @@ const json = (body: unknown, status: number) =>
     },
   });
 
-export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+export const POST: APIRoute = async ({ request }) => {
   let payload: { email?: unknown; source?: unknown; lists?: unknown };
   try {
     payload = await request.json();
@@ -96,7 +96,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   for (const id of ids.length > 0 ? ids : ALL_LISTS) mailingLists[id] = true;
 
   // Missing key is an operator error, not a visitor error. Log it loudly for
-  // the Pages tail, but never tell the browser which piece of config is absent.
+  // the Worker tail, but never tell the browser which piece of config is absent.
   if (!env.LOOPS_API_KEY) {
     console.error("[subscribe] LOOPS_API_KEY is not set; subscription unavailable.");
     return json({ error: "Signups are briefly unavailable. Try again shortly." }, 503);

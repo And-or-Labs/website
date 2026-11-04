@@ -11,17 +11,16 @@
  *   rl:<ip>:<utc hour>    rate limit, 5 uncached lookups per IP per hour
  *   spend:<YYYY-MM>       running Exa dollars; >= 8.00 skips Exa
  *
- * Secrets: EXA_API_KEY, TYPESAFE_API_KEY (Pages → andorlabs → Settings).
+ * Secrets: EXA_API_KEY, TYPESAFE_API_KEY (`npx wrangler secret put <NAME>`).
  * A missing key degrades to the matching *_down notice, never a crash.
  */
-import { interpret, type Firmo } from "../../src/lib/brief/interpret.ts";
-import { runBrief, type BriefEvent } from "../../src/lib/brief/pipeline.ts";
+import type { APIRoute } from "astro";
+import { env } from "cloudflare:workers";
+import { interpret, type Firmo } from "../../lib/brief/interpret.ts";
+import { runBrief, type BriefEvent } from "../../lib/brief/pipeline.ts";
 
-interface Env {
-  EXA_API_KEY?: string;
-  TYPESAFE_API_KEY?: string;
-  BRIEF?: KVNamespace;
-}
+// The rest of the site is prerendered; this route runs per request.
+export const prerender = false;
 
 interface SnitcherBody {
   name?: string;
@@ -53,7 +52,10 @@ const stream = (write: (w: WritableStreamDefaultWriter<string>) => Promise<void>
 
 const isLocalHost = (host: string) => /^(localhost|127\.0\.0\.1)(:\d+)?$/.test(host);
 
-export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUntil }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
+  // Cache and spend writes outlive the response; cfContext keeps the isolate
+  // alive until they settle (absent under `astro dev` without workerd).
+  const waitUntil = (p: Promise<unknown>) => (locals.cfContext ? locals.cfContext.waitUntil(p) : void p);
   const origin = request.headers.get("origin");
   const reqHost = new URL(request.url).host;
   const originHost = origin ? new URL(origin).host : reqHost;

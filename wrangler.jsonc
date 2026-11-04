@@ -1,0 +1,20 @@
+{
+	// The andorlabs.ca Worker: Astro's static pages as assets, plus the
+	// on-demand routes in src/pages/api/. Replaced the Pages project
+	// `andorlabs` on 2026-11-04 so RoutingCat's Worker can run before pages.
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "andorlabs",
+	"compatibility_date": "2026-11-01",
+	"compatibility_flags": ["global_fetch_strictly_public"],
+	"main": "@astrojs/cloudflare/entrypoints/server",
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS"
+	},
+	// Brief cache, rate limit and Exa spend counter (src/pages/api/brief.ts).
+	// Same namespace the Pages project bound, so cached briefs carry over.
+	"kv_namespaces": [{ "binding": "BRIEF", "id": "37b1291b169e4b648eb518231a26f0b9" }],
+	"observability": {
+		"enabled": true
+	}
+}

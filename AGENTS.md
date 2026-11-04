@@ -1,6 +1,6 @@
 ## Development
 
-Start the dev server with `npm run dev` (Astro 5).
+Start the dev server with `npm run dev` (Astro 7).
 
 ## Documentation
 
@@ -23,8 +23,9 @@ Consult these guides before working on related tasks:
 - IA (Oct 2026, four lines of work): MediaContext [1], Forward deployed marketer [2] at `/fdm/` (monthly retainer, $4,995 a month, three-month minimum), Lab notes [3] at `/notes/` (experiments plus field notes), On record [4] at `/record/` (bylines, coverage, reports, podcast, archives). `/gtm`, `/lab`, `/experiments` and `/published` 301. MediaContext and FDM use `src/layouts/Listing.astro`: a one-screen two-column product listing (decision column + bento). Section headers use `src/components/Section.astro`; priced offers and the subscribe box use the `.card` surface; `.btn.primary` is the elevated button. Butter pages set `--ct: var(--butter-ink)` via `tone()` for text contrast.
 - Content lives in `src/data/site.ts`; blog posts are in `src/content/blog/` and served at `/notes/<slug>/` (`/blog/*` 301s).
 - Copy rules: no em dashes, no exclamation marks. Claims rule: VJ led marketing and sales ops at Blockthrough and AdPushup through their acquisitions. Never "exited founder".
-- Subscribe posts to `functions/api/subscribe.ts` (Loops). `LOOPS_API_KEY` is a Pages secret.
-- Dev: `npm run dev`. Deploy: `npm run build && npx wrangler pages deploy dist --project-name andorlabs --branch <branch>` (Git auto-builds are disconnected). Preview branch: `rebuild-preview`.
+- Hosting (2026-11-04): the Worker `andorlabs` (`wrangler.jsonc`, `@astrojs/cloudflare`). Pages are prerendered into `dist/client`; `src/pages/api/*` (subscribe, brief, jev/decision) run on demand. Secrets `LOOPS_API_KEY`, `EXA_API_KEY`, `TYPESAFE_API_KEY` are Worker secrets (`npx wrangler secret put`); KV `BRIEF` is bound in `wrangler.jsonc`. The old Pages project `andorlabs` no longer serves the domain.
+- Subscribe posts to `src/pages/api/subscribe.ts` (Loops).
+- Dev: `npm run dev` (Node >= 22.23.4). Deploy: `npm run deploy` (build + `wrangler deploy`). Preview a build without promoting it: `npm run build && npx wrangler versions upload`.
 - Old site content (source of truth for legacy copy and press): `~/Developer/_archive/andorlabs-site-old/content/pages/*.json`. `portfolio.json` holds 9 bylines, 8 earned media, 7 research citations, author archives, projects and investments. Check it before calling any content missing.
 - Analytics: GTM container GTM-MFGN59WT is injected at the Cloudflare edge (not in the Astro source); it loads PostHog (default project), Snitcher and CookieYes. `src/scripts/analytics.ts` switches on PostHog exception autocapture + dead clicks once GTM has loaded the SDK, and `trackOps()` sends operational events. The home brief emits one `brief_run` per run (kind, trigger, consent, snitcher, stage, outcome, http, exa/jev, timings; no visitor identifiers) plus `brief_restored`; failures also go to Error Tracking via `captureException`.
-- Production deploy: `npm run build && npx wrangler pages deploy dist --project-name andorlabs --branch main` (production branch is `main`; staging uses `npm run build:staging` + `--branch staging`).
+- Production deploy: `npm run deploy` from `main`.

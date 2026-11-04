@@ -1,24 +1,26 @@
 /**
  * POST /api/jev/decision: the live "Call Jev" button in Megafly (/megafly/).
  *
- * Port of megafly/scripts/jev-service.ts for Cloudflare Pages Functions. It recomputes the
+ * Port of megafly/scripts/jev-service.ts, an on-demand route on the andorlabs Worker. It recomputes the
  * neural replay from the same public circuit file the browser uses, asks Jev (TypeSafe
  * system-one) the typed questions, and returns the verified response. Nothing is invented:
  * a missing key or an API error returns an error, and the page shows no decision.
  *
- * Secret: TYPESAFE_API_KEY (Pages → andorlabs → Settings → Variables and Secrets).
+ * Secret: TYPESAFE_API_KEY (`npx wrangler secret put TYPESAFE_API_KEY`).
  */
+import type { APIRoute } from "astro";
+import { env } from "cloudflare:workers";
 import { TypeSafeClient } from "@typesafe-ai/sdk";
-import { decisionState, simulateCircuit, type Circuit } from "../../../megafly/src/neural";
-import { allocation, questions } from "../../../megafly/src/jev";
-import { fallbackTrace } from "../../../megafly/src/trace";
+import { decisionState, simulateCircuit, type Circuit } from "../../../../megafly/src/neural";
+import { allocation, questions } from "../../../../megafly/src/jev";
+import { fallbackTrace } from "../../../../megafly/src/trace";
 
-interface Env { TYPESAFE_API_KEY?: string; }
+export const prerender = false;
 
 const json = (body: unknown, status: number) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" } });
 
-export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+export const POST: APIRoute = async ({ request }) => {
   const origin = request.headers.get("origin");
   if (origin && new URL(origin).host !== new URL(request.url).host) return json({ error: "Cross-origin requests are not allowed." }, 403);
   if (!env.TYPESAFE_API_KEY) return json({ error: "Jev is not connected on this server. No request was sent." }, 503);
