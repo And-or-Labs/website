@@ -7,6 +7,9 @@
 /work         /           301
 /work/*       /           301
 /blog/rss.xml /rss.xml 301
+# Workers' asset router lets /blog/* below win over the line above, sending the
+# old feed to /notes/rss.xml; this catches that hop.
+/notes/rss.xml /rss.xml 301
 # October 2026 drawing-sheet rebuild: the blog is now Notes, Mainline demo pages are gone.
 /blog          /notes/         301
 /blog/         /notes/         301
