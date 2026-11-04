@@ -98,8 +98,23 @@ export const POST: APIRoute = async ({ request }) => {
   // Missing key is an operator error, not a visitor error. Log it loudly for
   // the Worker tail, but never tell the browser which piece of config is absent.
   if (!env.LOOPS_API_KEY) {
-    console.error("[subscribe] LOOPS_API_KEY is not set; subscription unavailable.");
-    return json({ error: "Signups are briefly unavailable. Try again shortly." }, 503);
+    // Pages secrets can't be read back, so the key could not be copied when
+    // the site moved to this Worker. Until `wrangler secret put LOOPS_API_KEY`
+    // runs, forward to the old Pages deployment, which still holds the key and
+    // the same handler. Once the secret exists this branch is never taken.
+    console.error("[subscribe] LOOPS_API_KEY is not set; forwarding to the Pages deployment.");
+    try {
+      const res = await fetch("https://andorlabs.pages.dev/api/subscribe", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email, source, lists: requested }),
+        signal: AbortSignal.timeout(10000),
+      });
+      return new Response(await res.text(), { status: res.status, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" } });
+    } catch (err) {
+      console.error("[subscribe] Pages fallback unreachable:", err);
+      return json({ error: "Signups are briefly unavailable. Try again shortly." }, 503);
+    }
   }
 
   let res: Response;

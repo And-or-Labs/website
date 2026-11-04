@@ -14,6 +14,12 @@
 	// Brief cache, rate limit and Exa spend counter (src/pages/api/brief.ts).
 	// Same namespace the Pages project bound, so cached briefs carry over.
 	"kv_namespaces": [{ "binding": "BRIEF", "id": "37b1291b169e4b648eb518231a26f0b9" }],
+	// Zone routes rather than custom domains: they take the hostnames over from
+	// the Pages project with no DNS change and no gap in service.
+	"routes": [
+		{ "pattern": "andorlabs.ca/*", "zone_name": "andorlabs.ca" },
+		{ "pattern": "www.andorlabs.ca/*", "zone_name": "andorlabs.ca" }
+	],
 	"observability": {
 		"enabled": true
 	}
