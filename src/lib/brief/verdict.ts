@@ -16,17 +16,6 @@ export type VerdictKey =
   | "big_and_steady"
   | "too_early";
 
-export const VERDICTS: VerdictKey[] = [
-  "growing_into_it",
-  "runway_soundtrack",
-  "leaky_funnel",
-  "outgrown_story",
-  "tool_hoarder",
-  "quietly_profitable",
-  "big_and_steady",
-  "too_early",
-];
-
 const pct = (n: number) => Math.round(Math.abs(n));
 
 export function verdictLine(key: string, f: Facts): string {
