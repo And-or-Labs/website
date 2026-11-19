@@ -44,7 +44,7 @@ const latest = (await getCollection("blog", p => !p.data.draft)).sort((a, b) => 
       <Section id="transmissions" label="Latest transmissions" count={latest.length}>
         <div class="note-grid">
           {latest.map(p => (
-            <NotePreview id={`home-${p.id}`} label={p.data.category === "resources" ? "Resource" : "Field note"} title={p.data.title} description={p.data.standfirst ?? p.data.description} href={`/notes/${p.id}/`} cta="Read" image={p.data.heroImage} imageAlt={p.data.heroAlt} date={p.data.pubDate} />
+            <NotePreview id={`home-${p.id}`} label={p.data.category === "resources" ? "Resource" : "Field note"} title={p.data.title} description={p.data.standfirst ?? p.data.description} href={`/notes/${p.id}/`} cta="Read" image={p.data.heroImage} imageAlt={p.data.heroAlt} date={p.data.pubDate} loading="lazy" />
           ))}
         </div>
         <p class="sec-foot"><a class="text-link" href="/notes/">All transmissions <span aria-hidden="true">→</span></a></p>

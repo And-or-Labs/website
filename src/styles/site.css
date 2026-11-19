@@ -817,3 +817,16 @@ body { background: var(--paper); }
 .site-footer .foot-brand .brand { color: var(--ink); min-height: 44px; }
 .site-footer .foot-brand .cta { color: #fff; min-height: 40px; }
 .site-footer .foot-cols a { min-height: 36px; color: var(--ink); }
+
+/* Transmissions index: the newest post runs wide, the rest sit in the card grid. */
+.note-feature { margin-bottom: 16px; }
+.note-feature .note-preview .preview-link { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+.note-feature .note-preview .preview-image { height: 100%; aspect-ratio: 16 / 10; }
+.note-feature .note-preview .preview-copy { padding: 28px; justify-content: center; }
+.note-feature .note-preview .preview-title { font-size: clamp(20px, 1.8vw, 26px); line-height: 1.2; }
+.note-feature .note-preview .preview-description { font-size: 15px; max-width: 46ch; }
+.note-feature .note-preview .text-link { margin-top: 8px; }
+@media (max-width: 860px) {
+  .note-feature .note-preview .preview-link { grid-template-columns: 1fr; }
+  .note-feature .note-preview .preview-copy { padding: 20px; }
+}

@@ -14,13 +14,15 @@ interface Props {
   imageHeight?: number;
   date?: Date;
   level?: 2 | 3;
+  /** Cards below the fold pass "lazy"; the default stays eager for single above-the-fold previews. */
+  loading?: "eager" | "lazy";
 }
-const { id, label, title, description, href, cta, external = false, image, imageAlt = "", imageCredit, imageWidth, imageHeight, date, level = 3 } = Astro.props;
+const { id, label, title, description, href, cta, external = false, image, imageAlt = "", imageCredit, imageWidth, imageHeight, date, level = 3, loading = "eager" } = Astro.props;
 const H = `h${level}`;
 ---
 <article class="card note-preview">
   <a class="preview-link" href={href} aria-labelledby={`${id}-title`} {...(external ? { target: "_blank", rel: "noopener" } : {})}>
-    {image && <img class="preview-image" src={image} alt={imageAlt} width={imageWidth} height={imageHeight} loading="eager" decoding="async" />}
+    {image && <img class="preview-image" src={image} alt={imageAlt} width={imageWidth} height={imageHeight} loading={loading} decoding="async" />}
     <div class="preview-copy">
       <p class="label c">{label}</p>
       <H id={`${id}-title`} class="preview-title">{title}</H>

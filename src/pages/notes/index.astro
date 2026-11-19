@@ -2,12 +2,14 @@
 import { getCollection } from "astro:content";
 
 import NextNotes from "../../components/NextNotes.astro";
+import NotePreview from "../../components/NotePreview.astro";
 import Section from "../../components/Section.astro";
 import { EXPERIMENTS } from "../../data/site";
 import Page from "../../layouts/Page.astro";
 
 const posts = (await getCollection("blog", p => !p.data.draft)).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const fmt = (d: Date) => d.toISOString().slice(0, 10).replaceAll("-", ".");
+const [featured, ...rest] = posts;
+const kind = (c?: string) => (c === "resources" ? "Resource" : "Field note");
 ---
 <Page
   n={2}
@@ -22,9 +24,16 @@ const fmt = (d: Date) => d.toISOString().slice(0, 10).replaceAll("-", ".");
   ]}
 >
   <Section id="notes" label="Transmissions" count={posts.length}>
-    <ol class="posts">
-      {posts.map(p => <li><a href={`/notes/${p.id}/`}><time datetime={p.data.pubDate.toISOString()}>{fmt(p.data.pubDate)}</time><span>{p.data.title}</span></a></li>)}
-    </ol>
+    {featured && (
+      <div class="note-feature">
+        <NotePreview id={`feat-${featured.id}`} level={2} label={`Latest · ${kind(featured.data.category)}`} title={featured.data.title} description={featured.data.standfirst ?? featured.data.description} href={`/notes/${featured.id}/`} cta="Read" image={featured.data.heroImage} imageAlt={featured.data.heroAlt} date={featured.data.pubDate} />
+      </div>
+    )}
+    <div class="note-grid">
+      {rest.map(p => (
+        <NotePreview id={`n-${p.id}`} label={kind(p.data.category)} title={p.data.title} description={p.data.standfirst ?? p.data.description} href={`/notes/${p.id}/`} cta="Read" image={p.data.heroImage} imageAlt={p.data.heroAlt} date={p.data.pubDate} loading="lazy" />
+      ))}
+    </div>
   </Section>
   <Section id="experiments" label="Experiments" count={EXPERIMENTS.length}>
     <ul class="list">
