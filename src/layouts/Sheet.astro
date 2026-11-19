@@ -87,7 +87,7 @@ const isHome = Astro.url.pathname === "/";
           <p class="foot-line">{HOME.title}.</p>
           <Cta href={book("footer")} label="Book a call" meta="30 min" external />
         </div>
-        <nav class="foot-cols" aria-label="Site">
+        <nav class="foot-cols" aria-label="Site map">
           <div>
             <p class="label">Consulting</p>
             <ul>
@@ -98,9 +98,9 @@ const isHome = Astro.url.pathname === "/";
           <div>
             <p class="label">Transmissions</p>
             <ul>
-              <li><a href="/notes/">Field notes</a></li>
+              <li><a href="/notes/">All transmissions</a></li>
               <li><a href="/notes/#experiments">Experiments</a></li>
-              <li><a href="https://sliceofadtech.buzzsprout.com/2043731/episodes" target="_blank" rel="noopener">Slice of AdTech</a></li>
+              <li><a href="https://sliceofadtech.buzzsprout.com/2043731/episodes" target="_blank" rel="noopener" aria-label="Slice of AdTech, opens in a new tab">Slice of AdTech</a></li>
               <li><a href="/rss.xml">RSS</a></li>
             </ul>
           </div>

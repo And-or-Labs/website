@@ -773,7 +773,13 @@ body { background: var(--paper); }
 .pillar { display: flex; flex-direction: column; gap: 6px; padding: 18px; scroll-margin-top: 80px; }
 .pillar h3 { font-size: 16px; font-weight: 500; line-height: 1.3; letter-spacing: -.01em; }
 .pillar p { font-size: 14px; line-height: 1.55; color: var(--dim); text-wrap: pretty; }
-.how-tile { max-width: 46rem; }
+.how-tile { max-width: none; background: transparent; border: 0; padding: 0; }
+.how-tile .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 32px; }
+.how-tile .steps li { flex-direction: column; gap: 6px; padding: 4px 0 0; }
+.how-tile .steps li + li { border-top: 0; }
+.how-tile .steps h3 { font-size: 16px; }
+.how-tile .steps p { font-size: 14px; line-height: 1.55; }
+@media (max-width: 860px) { .how-tile .steps { grid-template-columns: 1fr; gap: 0; } .how-tile .steps li { flex-direction: row; gap: 12px; padding: 12px 0; border-top: 0; } .how-tile .steps li + li { border-top: 1px solid var(--guide-2); } }
 @media (max-width: 860px) {
   .offer-row, .pillars { grid-template-columns: 1fr; }
 }
@@ -783,6 +789,7 @@ body { background: var(--paper); }
 .note-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .note-grid .preview-image { aspect-ratio: 16 / 9; object-fit: cover; width: 100%; }
 .sec-foot { margin-top: 8px; }
+.sec-foot .text-link { display: inline-flex; align-items: center; min-height: 40px; }
 .home-close { display: grid; gap: 10px; max-width: 42rem; }
 .home-close .lead-line { font-size: 18px; line-height: 1.45; letter-spacing: -.01em; text-wrap: balance; }
 .home-close .price-line { font: 13px/1.5 var(--mono); color: var(--dim); }
@@ -798,7 +805,7 @@ body { background: var(--paper); }
 .foot-cols { grid-area: cols; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .foot-cols .label { color: var(--label); margin-bottom: 6px; }
 .foot-cols ul { list-style: none; }
-.foot-cols a { display: inline-flex; align-items: center; min-height: 36px; font-size: 14px; color: var(--ink); text-decoration: none; transition: color .15s var(--ease); }
+.foot-cols a { display: inline-flex; align-items: center; min-height: 40px; font-size: 14px; color: var(--ink); text-decoration: none; transition: color .15s var(--ease); }
 .foot-sub { grid-area: sub; }
 .foot-base { grid-area: base; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; padding: 6px 0; border-top: 1px solid var(--guide-2); }
 .site-footer .foot-base .elsewhere { margin-right: -12px; }
@@ -816,7 +823,7 @@ body { background: var(--paper); }
 .site-footer .foot-cols a, .site-footer .foot-brand a { width: auto; height: auto; justify-content: flex-start; }
 .site-footer .foot-brand .brand { color: var(--ink); min-height: 44px; }
 .site-footer .foot-brand .cta { color: #fff; min-height: 40px; }
-.site-footer .foot-cols a { min-height: 36px; color: var(--ink); }
+.site-footer .foot-cols a { min-height: 40px; color: var(--ink); }
 
 /* Transmissions index: the newest post runs wide, the rest sit in the card grid. */
 .note-feature { margin-bottom: 16px; }
@@ -829,4 +836,33 @@ body { background: var(--paper); }
 @media (max-width: 860px) {
   .note-feature .note-preview .preview-link { grid-template-columns: 1fr; }
   .note-feature .note-preview .preview-copy { padding: 20px; }
+}
+
+/* Adapt (Nov 2026): an odd last card spans the row instead of leaving a hole in the 2-up grid. */
+@media (min-width: 641px) and (max-width: 1023px) {
+  .note-grid > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .note-grid > :last-child:nth-child(odd) .preview-link { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .note-grid > :last-child:nth-child(odd) .preview-image { height: 100%; aspect-ratio: auto; min-height: 200px; }
+}
+
+/* Harden (Nov 2026): long words must wrap inside cards, empty lists say so, no motion when asked. */
+.pillar, .home-close, .ledger li > div, .foot-line { overflow-wrap: anywhere; }
+.empty { padding: 20px; border: 1px dashed var(--ink); background: var(--white); font: 13px/1.5 var(--mono); color: var(--dim); }
+.note-grid[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .foot-cols a, .site-footer * { transition: none; }
+}
+
+/* Delight (Nov 2026): linked cards behave like a keycap on the sheet. Lift on hover, press flat on click.
+   Hard offset only, transform and shadow only, and none of it under reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .note-preview { transition: transform .16s var(--ease), box-shadow .16s var(--ease); }
+  .note-preview:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--blue); }
+  .foot-cols a { background: linear-gradient(currentColor, currentColor) 0 calc(50% + 11px) / 0 1px no-repeat; transition: background-size .2s var(--ease), color .15s var(--ease); }
+  .foot-cols a:focus-visible { background-size: 100% 1px; }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .note-preview:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--blue); }
+  .note-preview:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--blue); }
+  .foot-cols a:hover { background-size: 100% 1px; }
 }

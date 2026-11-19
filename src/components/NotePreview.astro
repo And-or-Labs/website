@@ -37,8 +37,9 @@ const H = `h${level}`;
 <style>
   .note-preview { min-width: 0; padding: 0; }
   .preview-link { display: flex; height: 100%; flex-direction: column; text-decoration: none; }
-  .preview-image { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: center; outline: 1px solid rgba(0, 0, 0, .1); outline-offset: -1px; }
-  .preview-copy { display: flex; flex: 1; flex-direction: column; gap: 12px; padding: 20px; }
+  /* Tint behind the image so a slow or failed load reads as a plate, not a hole in the card. */
+  .preview-image { background: var(--sky); width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: center; outline: 1px solid rgba(0, 0, 0, .1); outline-offset: -1px; }
+  .preview-copy { overflow-wrap: anywhere; display: flex; flex: 1; flex-direction: column; gap: 12px; padding: 20px; }
   .preview-title { font: 400 18px/1.25 var(--serif); letter-spacing: -.015em; text-wrap: balance; }
   .preview-description { font-size: 14px; line-height: 1.6; text-wrap: pretty; }
   .text-link { margin-top: auto; text-decoration: underline; }

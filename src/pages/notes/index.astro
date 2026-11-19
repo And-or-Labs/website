@@ -24,6 +24,7 @@ const kind = (c?: string) => (c === "resources" ? "Resource" : "Field note");
   ]}
 >
   <Section id="notes" label="Transmissions" count={posts.length}>
+    {!featured && <p class="empty">No transmissions yet. The first one is in the queue.</p>}
     {featured && (
       <div class="note-feature">
         <NotePreview id={`feat-${featured.id}`} level={2} label={`Latest · ${kind(featured.data.category)}`} title={featured.data.title} description={featured.data.standfirst ?? featured.data.description} href={`/notes/${featured.id}/`} cta="Read" image={featured.data.heroImage} imageAlt={featured.data.heroAlt} date={featured.data.pubDate} />
