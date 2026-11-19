@@ -8,6 +8,14 @@ const app = {
     const state = new FetchState(request)
     const asset = await cf(state, env, ctx)
     if (asset) return asset
+    // Under `astro dev`, FetchState resolves routes with app.match(), which
+    // skips prerendered pages, so every page answered 404 locally. The
+    // adapter's default handler resolves with devMatch instead. Build-time
+    // constant, so this never reaches production.
+    if (import.meta.env.DEV) {
+      const { handle } = await import('@astrojs/cloudflare/handler')
+      return handle(request, env as never, ctx as never)
+    }
     return finalize(state, await astro(state))
   },
 }

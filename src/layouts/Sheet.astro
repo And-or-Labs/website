@@ -3,7 +3,6 @@ import { ClientRouter } from "astro:transitions";
 
 import "../styles/site.css";
 import "../styles/consent.css";
-import Briefing from "../components/Briefing.astro";
 import Cta from "../components/Cta.astro";
 import CopyDiffer from "../components/CopyDiffer.astro";
 import Icon from "../components/Icon.astro";
@@ -74,7 +73,8 @@ const isHome = Astro.url.pathname === "/";
       </main>
       <aside class="viz" transition:persist="figure" aria-label="Figure: inference">
         <div class="ao"><iframe src="/fig/engine.html" title="A bare high-bypass turbofan pod, floating: fan at the front, thrust out the back" loading="lazy"></iframe></div>
-        <Briefing />
+        <!-- Home only (CSS). Rendered on every page because the aside persists across navigation; display:none keeps the lazy iframe from loading elsewhere. -->
+        <div class="pc"><iframe src="/fig/computer.html" title="An old desk computer with a deep screen and a keyboard on a coiled cable. Type on it and the keys go down." loading="lazy"></iframe></div>
       </aside>
       <footer class="site-footer">
         <span class="label">© {new Date().getFullYear()} And/or Labs Inc. HQ, Calgary, AB.</span>
@@ -89,7 +89,6 @@ const isHome = Astro.url.pathname === "/";
   {import.meta.env.DEV && <CopyDiffer />}
   <script>
     import "../scripts/site.ts";
-    import "../scripts/briefing.ts";
     import "../scripts/conversions.ts";
     if (import.meta.env.DEV) import("../scripts/agentation-dev");
   </script>

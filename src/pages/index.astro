@@ -1,5 +1,5 @@
 ---
-import { HOME, MENU, PARTNERS, tone } from "../data/site";
+import { GRANTS, HOME, MENU, tone } from "../data/site";
 import Sheet from "../layouts/Sheet.astro";
 const [before, after] = HOME.title.split(HOME.emphasis);
 ---
@@ -8,18 +8,14 @@ const [before, after] = HOME.title.split(HOME.emphasis);
 
   <h1 class="display">{before}<em>{HOME.emphasis}</em><span class="rest">{after}</span></h1>
   <p class="founder">Founded by Vishveshwar Jatain, former marketing head of AdPushup (acquired by Geniee, Inc.) and Blockthrough (acquired by eyeo GmbH)</p>
-  <dl class="proof proof-top" aria-label="Launch partners">
-    <div>
-      <dt class="label">Launch partners</dt>
+  <dl class="proof proof-top" aria-label="Supported by">
+    <div class="proof-inline">
+      <dt class="label">Supported by</dt>
       <dd>
-        <ul class="partners">
-          {PARTNERS.map(p => <li><img src={p.src} alt={p.name} height={p.h} style={`height:${p.h}px`} loading="lazy" decoding="async" /></li>)}
+        <ul class="partners grants">
+          {GRANTS.map(g => <li><img src={g.src} alt={g.name} height={g.h} style={`--h:${g.h}px`} loading="lazy" decoding="async" /></li>)}
         </ul>
       </dd>
-    </div>
-    <div>
-      <dt class="label">Bylines &amp; coverage</dt>
-      <dd class="press-names"><a href="/record/" aria-label="Bylines and coverage in Digiday, Adweek, AdExchanger, Forbes and eMarketer">{["Digiday", "Adweek", "AdExchanger", "Forbes", "eMarketer"].map(p => <span class="tag">{p}</span>)}<span class="go" aria-hidden="true">→</span></a></dd>
     </div>
   </dl>
 

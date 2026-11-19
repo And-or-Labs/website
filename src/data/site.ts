@@ -50,6 +50,16 @@ export const PARTNERS = [
   { name: "Boardy", src: "/partners/boardy.png", h: 22 },
 ];
 
+// Startup programs and grants on the home "Supported by" row (2026-11-18). Logos from each brand's
+// own asset page; heights tuned so the wordmarks read at a similar weight.
+export const GRANTS = [
+  { name: "NVIDIA Inception Program", src: "/partners/nvidia-inception.svg", h: 30 },
+  { name: "Claude for Startups", src: "/grants/claude.svg", h: 18 },
+  { name: "ElevenLabs", src: "/grants/elevenlabs.svg", h: 14 },
+  { name: "Neon", src: "/grants/neon.svg", h: 18 },
+  { name: "TinyFish", src: "/grants/tinyfish.svg", h: 22 },
+];
+
 export const PRINTED_IN = ["Digiday", "Adweek", "AdExchanger", "ExchangeWire", "eMarketer", "Forbes", "CNET"];
 
 export const MEDIACONTEXT = {
