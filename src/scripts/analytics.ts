@@ -1,7 +1,7 @@
 import { hasAnalyticsConsent } from "./consent";
 import { BOOKING_URL } from "../data/site";
 
-type BookingIntent = "fdm" | "mediacontext";
+type BookingIntent = "fdm";
 type SiteEvent = "booking_started" | "newsletter_subscribed";
 type EventDetails = { intent?: BookingIntent; placement?: string };
 type EventProperties = Record<string, string>;
@@ -25,7 +25,6 @@ declare global {
 const booking = new URL(BOOKING_URL);
 const placements = new Set([
   "home-bar", "fdm-bar", "fdm-hero", "fdm-offer", "fdm-next",
-  "mediacontext-bar", "mediacontext-hero", "mediacontext-next",
   "homepage", "blog-index", "blog-post", "record", "footer", "unknown",
 ]);
 const pending = new Set<number>();
@@ -40,7 +39,7 @@ export function trackSiteEvent(event: "booking_started", details: { intent: Book
 export function trackSiteEvent(event: SiteEvent, details: EventDetails = {}): void {
   if (!hasAnalyticsConsent()) return;
   if (event !== "booking_started" && event !== "newsletter_subscribed") return;
-  if (event === "booking_started" && details.intent !== "fdm" && details.intent !== "mediacontext") return;
+  if (event === "booking_started" && details.intent !== "fdm") return;
 
   const properties: EventProperties = {
     placement: details.placement && placements.has(details.placement) ? details.placement : "unknown",
@@ -82,7 +81,7 @@ function trackBookingStart(event: MouseEvent) {
   try { destination = new URL(link.href); } catch { return; }
   if (destination.origin !== booking.origin || destination.pathname.replace(/\/$/, "") !== booking.pathname) return;
   const intent = destination.searchParams.get("utm_campaign");
-  if (intent !== "fdm" && intent !== "mediacontext") return;
+  if (intent !== "fdm") return;
   trackSiteEvent("booking_started", {
     intent,
     placement: destination.searchParams.get("utm_content") ?? undefined,

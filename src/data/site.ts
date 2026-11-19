@@ -1,20 +1,20 @@
 // Every piece of copy on the site, in one place.
 // Sources: VJ's Homepage v2 note, the October 2026 long-form build (08891d2:src/data/site.ts),
-// the MediaContext / Megafly / zero-click READMEs, and CV_VJ_Mozilla_Firefox.md
+// the Megafly / zero-click READMEs, and CV_VJ_Mozilla_Firefox.md
 // for Blockthrough and AdPushup career results. Claims rule: VJ led marketing and
 // sales ops at Blockthrough and AdPushup through their acquisitions. He did not found or exit them.
 
 export const BOOKING_URL = "https://cal.com/jatain/book";
 export const EMAIL = "vj@andorlabs.ca";
 
-export const book = (placement: string) => `${BOOKING_URL}?utm_source=andorlabs&utm_medium=site&utm_campaign=${placement.startsWith("mediacontext") ? "mediacontext" : "fdm"}&utm_content=${encodeURIComponent(placement)}`;
+export const book = (placement: string) => `${BOOKING_URL}?utm_source=andorlabs&utm_medium=site&utm_campaign=fdm&utm_content=${encodeURIComponent(placement)}`;
 
 export const SITE = {
   name: "And/or Labs",
   url: "https://andorlabs.ca",
   title: "And/or Labs | We engineer growth for media & adtech companies",
   description:
-    "We engineer growth for media & adtech companies. We build MediaContext, work inside client teams as a forward deployed marketer, run experiments, and publish what we learn.",
+    "We engineer growth for media & adtech companies. We work inside client teams as a forward deployed marketer, run experiments, and publish what we learn.",
 };
 
 export const SOCIALS = [
@@ -36,10 +36,9 @@ export type Color = "blue" | "coral" | "green" | "lilac" | "butter" | "pink";
 export const tone = (c: Color) => `--c: var(--${c}); --ct: var(--${c}-ink)`;
 
 export const MENU: { n: number; href: string; label: string; hint: string; fig: Fig; color: Color }[] = [
-  { n: 1, href: "/mediacontext/", label: "MediaContext", hint: "Our product. Find the next publisher account worth calling.", fig: "radar", color: "blue" },
-  { n: 2, href: "/fdm/", label: "Forward Deployed Marketer", hint: "A senior operator inside your team. $4,995 a month, three-month minimum.", fig: "growth", color: "pink" },
-  { n: 3, href: "/notes/", label: "Transmissions", hint: "Writing, experiments and podcast episodes.", fig: "flask", color: "blue" },
-  { n: 4, href: "/record/", label: "On the record", hint: "Bylines and quotes, earned media, research citations.", fig: "press", color: "pink" },
+  { n: 1, href: "/fdm/", label: "Consulting", hint: "A senior operator inside your team. $4,995 a month, three-month minimum.", fig: "growth", color: "pink" },
+  { n: 2, href: "/notes/", label: "Transmissions", hint: "Writing, experiments and podcast episodes.", fig: "flask", color: "blue" },
+  { n: 3, href: "/record/", label: "On the record", hint: "Bylines and quotes, earned media, research citations.", fig: "press", color: "pink" },
 ];
 
 export const PARTNERS = [
@@ -61,14 +60,6 @@ export const GRANTS = [
 ];
 
 export const PRINTED_IN = ["Digiday", "Adweek", "AdExchanger", "ExchangeWire", "eMarketer", "Forbes", "CNET"];
-
-export const MEDIACONTEXT = {
-  title: "Find the next publisher account worth calling.",
-  lede: "MediaContext ranks the Tranco top 100,000 domains with a Sincera publisher ID by traffic, then shows the sales house, ad formats, header bidding and ad density behind each account.",
-  image: { src: "/products/mediacontext-publishers.webp", alt: "MediaContext Publishers view: premium publishers ranked by traffic, with sales house, ad formats, header bidding and ad density per account." },
-  href: "https://mediacontext.dev",
-  cta: "Book a MediaContext call",
-};
 
 export const FDM = {
   title: "A senior marketer, deployed inside your team.",

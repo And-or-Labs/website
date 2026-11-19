@@ -31,3 +31,7 @@
 # October 2026: GTM Packages became Forward deployed marketer, Writing split into Field notes and On record.
 /gtm           /fdm/          301
 /gtm/          /fdm/          301
+# November 2026: MediaContext left the site; the consulting practice is the front door.
+/mediacontext   /fdm/          301
+/mediacontext/  /fdm/          301
+/mediacontext/* /fdm/          301

@@ -10,7 +10,7 @@ const posts = (await getCollection("blog", p => !p.data.draft)).sort((a, b) => b
 const fmt = (d: Date) => d.toISOString().slice(0, 10).replaceAll("-", ".");
 ---
 <Page
-  n={3}
+  n={2}
   heading="Things we built to see what happens."
   lede="Small, strange, working software. Some of it becomes product. Most of it becomes a note."
   description="Transmissions from And/or Labs on GTM, AI and the post-software era."
