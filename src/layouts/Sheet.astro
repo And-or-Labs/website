@@ -76,6 +76,7 @@ const isHome = Astro.url.pathname === "/";
         <!-- Home only (CSS). Rendered on every page because the aside persists across navigation; display:none keeps the lazy iframe from loading elsewhere. -->
         <div class="pc"><iframe src="/fig/computer.html" title="An old desk computer with a deep screen and a keyboard on a coiled cable. Type on it and the keys go down." loading="lazy"></iframe></div>
       </aside>
+      <div class="after"><slot name="after" /></div>
       <footer class="site-footer">
         <span class="label">© {new Date().getFullYear()} And/or Labs Inc. HQ, Calgary, AB.</span>
         <nav class="elsewhere" aria-label="Elsewhere">

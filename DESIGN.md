@@ -150,7 +150,7 @@ A diagram-on-paper palette: warm off-white grounds, a single dominant blue, five
 
 ## Layout
 
-The site is a **drawing sheet**: a `1488px`-max `.sheet` wrapping a `.frame` with three persistent zones. On desktop, `.frame` is a two-column grid (`1.35fr` content pane + `1fr` figure pane) with a sticky top bar, a sticky bottom bar, and a full-height right `aside.viz` that holds the page figure. On inner pages the content pane carries a 120px blueprint grid; on the home the figure hides behind the visitor-briefing paper sheet (which itself sits on whole 120px cells).
+The site is a **scrolling drawing sheet** (Nov 2026; it used to be locked to one viewport). `.frame` holds a sticky top bar, the content, and the footer, and pages scroll normally. On the home the content pane (`1.35fr`) and the figure pane `aside.viz` (`1fr`, desk computer) form a first-screen hero band; the `after` slot in `Sheet.astro` carries full-width sections below it. Inner pages are a single document column with the figure hidden. The content pane keeps its 120px blueprint guides.
 
 - **Container:** `.sheet` max-width 1488px, padding `clamp(24px, 4vw, 56px)` inline.
 - **Density:** Compact by design — min-height 44–48px on interactive rows, no cards float, borders do the lifting.
