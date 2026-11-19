@@ -6,7 +6,8 @@ import "../styles/consent.css";
 import Cta from "../components/Cta.astro";
 import CopyDiffer from "../components/CopyDiffer.astro";
 import Icon from "../components/Icon.astro";
-import { book, MENU, SITE, SOCIALS, tone, type Color, type Fig } from "../data/site";
+import Subscribe from "../components/Subscribe.astro";
+import { book, FDM, HOME, MENU, SITE, SOCIALS, tone, type Color, type Fig } from "../data/site";
 import { RoutingCat } from "routingcat/astro/components";
 
 interface Props {
@@ -78,12 +79,50 @@ const isHome = Astro.url.pathname === "/";
       </aside>
       <div class="after"><slot name="after" /></div>
       <footer class="site-footer">
-        <span class="label">© {new Date().getFullYear()} And/or Labs Inc. HQ, Calgary, AB.</span>
-        <nav class="elsewhere" aria-label="Elsewhere">
-          {SOCIALS.map(s => (
-            <a href={s.href} {...(s.id === "email" ? {} : { target: "_blank", rel: "noopener" })} aria-label={s.label}><Icon name={s.id} /></a>
-          ))}
+        <div class="foot-brand">
+          <a class="brand" href="/" aria-label={`${SITE.name}, home`}>
+            <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="currentColor" /><path d="M20.75 8 L11.25 24" stroke="#fff" stroke-width="3.25" stroke-linecap="round" /></svg>
+            <span class="brand-name">And/or Labs</span>
+          </a>
+          <p class="foot-line">{HOME.title}.</p>
+          <Cta href={book("footer")} label="Book a call" meta="30 min" external />
+        </div>
+        <nav class="foot-cols" aria-label="Site">
+          <div>
+            <p class="label">Consulting</p>
+            <ul>
+              {FDM.pillars.map(p => <li><a href={`/fdm/#${p.id}`}>{p.name}</a></li>)}
+              <li><a href="/fdm/#offer">Pricing</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="label">Transmissions</p>
+            <ul>
+              <li><a href="/notes/">Field notes</a></li>
+              <li><a href="/notes/#experiments">Experiments</a></li>
+              <li><a href="https://sliceofadtech.buzzsprout.com/2043731/episodes" target="_blank" rel="noopener">Slice of AdTech</a></li>
+              <li><a href="/rss.xml">RSS</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="label">On the record</p>
+            <ul>
+              <li><a href="/record/#bylines">Bylines</a></li>
+              <li><a href="/record/#earned">Coverage</a></li>
+              <li><a href="/record/#citations">Citations</a></li>
+              <li><a href="/record/#podcast">Podcast</a></li>
+            </ul>
+          </div>
         </nav>
+        <div class="foot-sub"><Subscribe source="footer" /></div>
+        <div class="foot-base">
+          <span class="label">© {new Date().getFullYear()} And/or Labs Inc. HQ, Calgary, AB.</span>
+          <nav class="elsewhere" aria-label="Elsewhere">
+            {SOCIALS.map(s => (
+              <a href={s.href} {...(s.id === "email" ? {} : { target: "_blank", rel: "noopener" })} aria-label={s.label}><Icon name={s.id} /></a>
+            ))}
+          </nav>
+        </div>
       </footer>
     </div>
   </div>

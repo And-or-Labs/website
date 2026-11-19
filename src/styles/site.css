@@ -790,3 +790,30 @@ body { background: var(--paper); }
 .home-close .ctas { margin-top: 6px; }
 @media (max-width: 1023px) { .note-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .note-grid { grid-template-columns: 1fr; } .home-more { padding-block: 40px 56px; } }
+
+/* ---------- Footer (Nov 2026): brand, sitemap, newsletter, imprint ---------- */
+.site-footer { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr) minmax(0, 1fr); grid-template-areas: "brand cols sub" "base base base"; gap: 40px 48px; align-items: start; min-height: 0; padding: 56px var(--pad) 0; background: var(--paper); }
+.foot-brand { grid-area: brand; display: grid; gap: 14px; justify-items: start; }
+.foot-line { font-size: 14px; line-height: 1.55; color: var(--dim); max-width: 30ch; text-wrap: pretty; }
+.foot-cols { grid-area: cols; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.foot-cols .label { color: var(--label); margin-bottom: 6px; }
+.foot-cols ul { list-style: none; }
+.foot-cols a { display: inline-flex; align-items: center; min-height: 36px; font-size: 14px; color: var(--ink); text-decoration: none; transition: color .15s var(--ease); }
+.foot-sub { grid-area: sub; }
+.foot-base { grid-area: base; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; padding: 6px 0; border-top: 1px solid var(--guide-2); }
+.site-footer .foot-base .elsewhere { margin-right: -12px; }
+@media (hover: hover) and (pointer: fine) { .foot-cols a:hover { color: var(--blue); } }
+@media (max-width: 1023px) {
+  .site-footer { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "brand sub" "cols cols" "base base"; }
+}
+@media (max-width: 640px) {
+  .site-footer { grid-template-columns: minmax(0, 1fr); grid-template-areas: "brand" "cols" "sub" "base"; gap: 32px; padding-top: 40px; }
+  .foot-cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .foot-base { flex-direction: column-reverse; align-items: flex-start; padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+  .site-footer .foot-base .elsewhere { margin: 0 0 0 -12px; }
+}
+/* The old one-line footer sized every link as a 44px icon box; keep that for the icons only. */
+.site-footer .foot-cols a, .site-footer .foot-brand a { width: auto; height: auto; justify-content: flex-start; }
+.site-footer .foot-brand .brand { color: var(--ink); min-height: 44px; }
+.site-footer .foot-brand .cta { color: #fff; min-height: 40px; }
+.site-footer .foot-cols a { min-height: 36px; color: var(--ink); }
