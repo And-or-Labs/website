@@ -1,0 +1,94 @@
+---
+// Dev-only inline copy editor + diff exporter. Mounted from Sheet.astro behind
+// import.meta.env.DEV so it never ships to prod. is:inline (not a bundled module)
+// because a separately fetched script gets cached stale or blocked by extensions
+// and the pill silently never appears. ClientRouter re-runs inline scripts after
+// each swap, and the swap drops the old bar with the old <body>, so it remounts cleanly.
+---
+
+<script is:inline>
+  (function () {
+    const SEL = 'h1,h2,h3,h4,h5,p,li,a,button,blockquote,figcaption,summary';
+    let armed = false;
+    let editables = [];
+    let bar = null;
+
+    const isLeaf = (el) =>
+      el.textContent.trim() && !el.closest('#cd-bar') && !el.querySelector(SEL);
+    const ctxOf = (el) => { const s = el.closest('[id]'); return s && s.id ? '#' + s.id : ''; };
+    const preventNav = (e) => e.preventDefault();
+
+    function arm() {
+      editables = [...document.querySelectorAll(SEL)].filter(isLeaf);
+      editables.forEach((el) => {
+        el.dataset.cdOrig = el.textContent.trim();
+        el.setAttribute('contenteditable', 'true');
+        el.style.outline = '1px dashed rgba(37,99,235,.35)';
+        el.style.outlineOffset = '2px';
+        if (el.tagName === 'A' || el.tagName === 'BUTTON' || el.closest('summary'))
+          el.addEventListener('click', preventNav);
+      });
+      armed = true;
+      render();
+    }
+    function disarm() {
+      editables.forEach((el) => {
+        el.removeAttribute('contenteditable');
+        el.removeAttribute('data-cd-orig');
+        el.style.outline = '';
+        el.style.outlineOffset = '';
+        el.removeEventListener('click', preventNav);
+      });
+      editables = [];
+      armed = false;
+      render();
+    }
+    const collect = () =>
+      editables
+        .filter((el) => el.textContent.trim() !== el.dataset.cdOrig)
+        .map((el) => ({ tag: el.tagName.toLowerCase(), ctx: ctxOf(el), from: el.dataset.cdOrig, to: el.textContent.trim() }));
+
+    function flash(btn, txt) { if (!btn) return; const o = btn.textContent; btn.textContent = txt; setTimeout(() => (btn.textContent = o), 1300); }
+
+    async function copyDiff() {
+      const d = collect();
+      const btn = document.getElementById('cd-copy');
+      if (!d.length) { flash(btn, 'No changes'); return; }
+      const md =
+        '## Copy changes — ' + location.host + '\n\n' +
+        d.map((x, i) => `${i + 1}. \`<${x.tag}>\` ${x.ctx}\n   FROM: ${x.from}\n   TO:   ${x.to}`).join('\n\n');
+      try { await navigator.clipboard.writeText(md); }
+      catch { const t = document.createElement('textarea'); t.value = md; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+      flash(btn, 'Copied ✓');
+    }
+
+    function render() {
+      if (!bar) {
+        bar = document.createElement('div');
+        bar.id = 'cd-bar';
+        bar.style.cssText = 'position:fixed;left:16px;bottom:16px;z-index:2147483647;font:600 13px/1.3 ui-sans-serif,system-ui,-apple-system';
+        document.body.appendChild(bar);
+      }
+      if (!armed) {
+        bar.innerHTML = '<button id="cd-edit" style="cursor:pointer;border:0;border-radius:9999px;background:#0a0a0a;color:#fff;padding:8px 14px;font:inherit;box-shadow:0 8px 30px rgba(0,0,0,.28)">&#9998; Copy differ</button>';
+        bar.querySelector('#cd-edit').onclick = arm;
+      } else {
+        bar.innerHTML =
+          '<div style="display:flex;gap:8px;align-items:center;background:#0a0a0a;color:#fff;padding:8px 8px 8px 14px;border-radius:9999px;box-shadow:0 8px 30px rgba(0,0,0,.28)">' +
+          '<span>Copy differ</span><span id="cd-count" style="opacity:.6;font-weight:500">0 edits</span>' +
+          '<button id="cd-copy" style="cursor:pointer;border:0;border-radius:9999px;background:#2563eb;color:#fff;padding:6px 14px;font:inherit">Copy diff</button>' +
+          '<button id="cd-done" style="cursor:pointer;border:0;border-radius:9999px;background:#262626;color:#fff;padding:6px 11px;font:inherit">Done</button></div>';
+        bar.querySelector('#cd-copy').onclick = copyDiff;
+        bar.querySelector('#cd-done').onclick = disarm;
+      }
+    }
+
+    document.addEventListener('input', () => {
+      const c = document.getElementById('cd-count');
+      if (c && armed) c.textContent = collect().length + ' edits';
+    }, true);
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', render);
+    else render();
+  })();
+</script>
