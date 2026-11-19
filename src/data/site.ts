@@ -41,14 +41,6 @@ export const MENU: { n: number; href: string; label: string; hint: string; fig: 
   { n: 3, href: "/record/", label: "On the record", hint: "Bylines and quotes, earned media, research citations.", fig: "press", color: "pink" },
 ];
 
-export const PARTNERS = [
-  { name: "NVIDIA Inception", src: "/partners/nvidia-inception.svg", h: 26 },
-  { name: "AirOps", src: "/partners/airops.svg", h: 18 },
-  { name: "Snitcher", src: "/partners/snitcher.svg", h: 12 },
-  { name: "Superdesign", src: "/partners/superdesign.svg", h: 22 },
-  { name: "Boardy", src: "/partners/boardy.png", h: 22 },
-];
-
 // Startup programs and grants on the home "Supported by" row (2026-11-18). Logos from each brand's
 // own asset page; heights tuned so the wordmarks read at a similar weight.
 export const GRANTS = [
@@ -58,8 +50,6 @@ export const GRANTS = [
   { name: "Neon", src: "/grants/neon.svg", h: 18 },
   { name: "TinyFish", src: "/grants/tinyfish.svg", h: 22 },
 ];
-
-export const PRINTED_IN = ["Digiday", "Adweek", "AdExchanger", "ExchangeWire", "eMarketer", "Forbes", "CNET"];
 
 export const FDM = {
   title: "A senior marketer, deployed inside your team.",
