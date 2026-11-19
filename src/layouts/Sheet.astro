@@ -17,7 +17,7 @@ interface Props {
   image?: string;
   type?: "website" | "article";
   publishedTime?: Date;
-  variant?: "index" | "document" | "listing";
+  variant?: "index" | "document";
 }
 const { title, description = SITE.description, fig, color = "blue", image = "/og-image.jpg", type = "website", publishedTime, variant = "document" } = Astro.props;
 const fullTitle = title ? `${title} | ${SITE.name}` : SITE.title;

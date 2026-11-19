@@ -73,10 +73,16 @@ export const FDM = {
     for: "For a media or adtech company whose product has outgrown its positioning, website and pipeline.",
     cta: "Book a scoping call",
   },
-  capabilities: [
-    { name: "Positioning & websites", work: "A clear product story and a website that helps buyers take the next step." },
-    { name: "Organic growth", work: "SEO, AI search visibility, and content built around relevant buyer questions." },
-    { name: "GTM engineering & agents", work: "Account research, CRM workflows, and AI agents that turn a recurring task into a measurable workflow." },
+  // The three consulting pillars (VJ, 2026-11-18). Work lines are the existing capability copy.
+  pillars: [
+    { id: "positioning", name: "Positioning & design", work: "A clear product story and a website that helps buyers take the next step." },
+    { id: "content", name: "Content strategy", work: "SEO, AI search visibility, and content built around relevant buyer questions." },
+    { id: "gtm-engineering", name: "GTM engineering", work: "Account research, CRM workflows, and AI agents that turn a recurring task into a measurable workflow." },
+  ],
+  how: [
+    { name: "Diagnose", text: "A written diagnosis of your positioning, website, pipeline and tooling." },
+    { name: "Agree", text: "The few changes that will move revenue, with scope and price fixed." },
+    { name: "Build", text: "I build them inside your stack, one priority at a time." },
   ],
   process: "We'll discuss what needs to change, confirm fit and budget, and identify the first piece of work. If there's a fit, you'll receive a defined scope and next steps.",
 };

@@ -1,49 +1,63 @@
 ---
-import { book, FDM as F, TESTIMONIALS } from "../data/site";
-import Listing from "../layouts/Listing.astro";
-const scott = TESTIMONIALS[0];
+import Cta from "../components/Cta.astro";
+import Section from "../components/Section.astro";
+import Steps from "../components/Steps.astro";
+import { book, FDM as F } from "../data/site";
+import Page from "../layouts/Page.astro";
+
 const track = [
   { company: "Blockthrough", note: "Acquired by eyeo GmbH", result: "3× organic traffic", role: "Director, Marketing & Sales Operations" },
   { company: "AdPushup", note: "Acquired by Geniee, Inc.", result: "Seed to $10M ARR, during tenure", role: "Product Marketing Manager", src: { label: "YourStory", href: "https://yourstory.com/2020/01/startup-adtech-saas-ad-pushup-web-publishers" } },
   { company: "Filament", note: "Client", result: "Positioning, messaging and a rebuilt site", role: "Client engagement", src: { label: "Site", href: "https://www.wearefilament.com" } },
 ];
+const facts = [
+  { k: "For", v: "Media and adtech companies" },
+  { k: "Fit", v: "Product has outgrown its positioning, website and pipeline" },
+  { k: "Operator", v: "Vishveshwar Jatain, hands-on" },
+];
+const pad = (n: number) => String(n).padStart(2, "0");
 ---
-<Listing
-  n={1}
-  heading={F.title}
-  lede={F.lede}
-  description={F.lede}
-  price={{ label: F.offer.label, amount: F.offer.price, unit: F.offer.term, note: F.offer.commitment }}
-  cta={{ label: F.offer.cta, href: book("fdm-hero") }}
-  facts={[
-    { k: "For", v: "Media and adtech companies" },
-    { k: "Fit", v: "Product has outgrown its positioning, website and pipeline" },
-    { k: "Operator", v: "Vishveshwar Jatain, hands-on" },
-  ]}
-  proofLabel="Track record"
-  how={[
-    { name: "Diagnose", text: "A written diagnosis of your positioning, website, pipeline and tooling." },
-    { name: "Agree", text: "The few changes that will move revenue, with scope and price fixed." },
-    { name: "Build", text: "I build them inside your stack, one priority at a time." },
-  ]}
-  get={F.capabilities.map(c => ({ name: c.name, text: c.work }))}
->
-  <div slot="proof" class="proof-track">
-    <ol class="ledger">
-      {track.map((t, i) => (
-        <li>
-          <span class="lg-n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-          <div class="lg-co"><span class="co">{t.company}</span><span class="lg-note">{t.note}</span></div>
-          <div class="lg-res"><b>{t.result}</b><span class="role">{t.role}</span></div>
-          {t.src ? <a class="lg-src" href={t.src.href} target="_blank" rel="noopener">{t.src.label} <span aria-hidden="true">↗</span></a> : <span class="lg-src" aria-hidden="true"></span>}
-          {t.company === "Filament" && (
-            <figure class="lg-quote">
-              <blockquote><p>“{scott.quote}”</p></blockquote>
-              <figcaption><cite>{scott.author}, {scott.role}</cite></figcaption>
-            </figure>
-          )}
+<Page n={1} heading={F.title} lede={F.lede} description={F.lede}>
+  <div slot="header-extra" class="offer-row" id="offer">
+    <article class="card price-card">
+      <p class="label c">{F.offer.label}</p>
+      <p class="amount"><b>{F.offer.price}</b><span class="unit">{F.offer.term}</span><span class="price-note">{F.offer.commitment}</span></p>
+      <div class="ctas"><Cta href={book("fdm-hero")} label={F.offer.cta} meta="30 min" external /></div>
+    </article>
+    <dl class="facts">
+      {facts.map(f => <div><dt>{f.k}</dt><dd>{f.v}</dd></div>)}
+    </dl>
+  </div>
+
+  <Section id="pillars" label="Pillars" count={F.pillars.length}>
+    <ol class="pillars">
+      {F.pillars.map((p, i) => (
+        <li class="card pillar" id={p.id}>
+          <span class="label c">{pad(i + 1)}</span>
+          <h3>{p.name}</h3>
+          <p>{p.work}</p>
         </li>
       ))}
     </ol>
-  </div>
-</Listing>
+  </Section>
+
+  <Steps id="how" label="How it works" items={F.how} class="how-tile" />
+
+  <Section id="track" label="Track record" count={track.length}>
+    <ol class="ledger">
+      {track.map((t, i) => (
+        <li>
+          <span class="lg-n" aria-hidden="true">{pad(i + 1)}</span>
+          <div class="lg-co"><span class="co">{t.company}</span><span class="lg-note">{t.note}</span></div>
+          <div class="lg-res"><b>{t.result}</b><span class="role">{t.role}</span></div>
+          {t.src ? <a class="lg-src" href={t.src.href} target="_blank" rel="noopener">{t.src.label} <span aria-hidden="true">↗</span></a> : <span class="lg-src" aria-hidden="true"></span>}
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <Fragment slot="next">
+    <p>{F.process}</p>
+    <div class="ctas"><Cta href={book("fdm-next")} label={F.offer.cta} meta="30 min" external /></div>
+  </Fragment>
+</Page>
