@@ -1,0 +1,39 @@
+---
+/** Four short testimonials: dithered portrait, one verbatim line, name and role. */
+import { TESTIMONIALS } from "../data/site";
+interface Props { id?: string; label?: string; }
+const { id = "testimonials", label = "In their words" } = Astro.props;
+---
+<section class="sec" id={id} aria-labelledby={`${id}-h`}>
+  <h2 class="sec-h" id={`${id}-h`}><span>{label}</span><span class="n">{String(TESTIMONIALS.length).padStart(2, "0")}</span></h2>
+  <ul class="voices">
+    {TESTIMONIALS.map(t => (
+      <li class="card voice">
+        <figure>
+          {t.img
+            ? <img class="voice-img" src={t.img} alt={`Portrait of ${t.author}`} width="160" height="160" loading="lazy" decoding="async" />
+            : <span class="voice-img voice-mono" aria-hidden="true">{t.initials}</span>}
+          <blockquote><p>{t.line}</p></blockquote>
+          <figcaption><cite>{t.author}</cite><span>{t.role}</span></figcaption>
+        </figure>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .voices { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .voice { padding: 0; min-width: 0; }
+  .voice figure { display: flex; flex-direction: column; height: 100%; }
+  /* Square portrait on top; pixelated keeps the 2px dither cells crisp when scaled. */
+  .voice-img { display: grid; place-items: center; width: 100%; aspect-ratio: 1; border-bottom: 1px solid var(--ink); image-rendering: pixelated; background: #eef1ff; }
+  .voice-mono { font: 500 clamp(40px, 5vw, 64px)/1 var(--mono); letter-spacing: -.04em; color: #0a2ebf;
+    background: radial-gradient(#0a2ebf 1px, transparent 1.2px) 0 0 / 6px 6px, #eef1ff; }
+  .voice blockquote { flex: 1; padding: 16px 16px 0; }
+  .voice blockquote p { font-size: 15px; line-height: 1.45; letter-spacing: -.01em; text-wrap: pretty; }
+  .voice figcaption { display: grid; gap: 2px; padding: 14px 16px 16px; }
+  .voice cite { font: 12px/1.4 var(--mono); font-style: normal; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); }
+  .voice figcaption span { font-size: 12px; line-height: 1.4; color: var(--dim); }
+  @media (max-width: 1023px) { .voices { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 480px) { .voices { grid-template-columns: 1fr; } .voice figure { display: grid; grid-template-columns: 96px minmax(0, 1fr); } .voice-img { grid-row: 1 / 3; align-self: start; height: auto; aspect-ratio: 1; object-fit: cover; border-bottom: 1px solid var(--ink); border-right: 1px solid var(--ink); } .voice-mono { font-size: 32px; } .voice blockquote { padding: 12px 12px 0; } .voice figcaption { padding: 8px 12px 12px; } }
+</style>

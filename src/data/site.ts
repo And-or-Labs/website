@@ -87,11 +87,17 @@ export const FDM = {
   process: "We'll discuss what needs to change, confirm fit and budget, and identify the first piece of work. If there's a fit, you'll receive a defined scope and next steps.",
 };
 
-export const TESTIMONIALS = [
-  { quote: "VJ brought a thoughtful approach to the UX, positioning, and messaging during the site redesign process, and a much-needed 'been-there-done-that' perspective to many parts of our business.", author: "Scott Konopasek", role: "Co-founder & COO, Filament" },
-  { quote: "VJ is the best B2B marketer I've worked with. I'd recommend him to anyone looking for a marketing leader who thrives in early-stage chaos.", author: "Marty Kratky-Katz", role: "Exited tech founder" },
-  { quote: "VJ's eye for design and details with the ability to look at the big picture was unlike any I've seen before.", author: "Shubham Grover", role: "Founder, Assist" },
-  { quote: "VJ has an uncanny ability to say the most complex things in the most simple manner.", author: "Sudhiranjan Bannerjee", role: "Senior Trade Officer, Govt. of Alberta" },
+// Four voices (VJ, 2026-11-18). Each line is one sentence or clause lifted verbatim
+// from the source quote; nothing reworded. Sources: Scott, the Filament LinkedIn
+// recommendation (3277652); Marty and Trevor, _archive/andorlabs-site-old/content/
+// testimonials/*.md; Goswijn, _archive/website-dub-old/src/components/Testimonials.astro.
+// Portraits are dithered by scripts/portraits.mts. Scott has no verified photo yet,
+// so his card shows a monogram rather than a guessed face.
+export const TESTIMONIALS: { line: string; author: string; role: string; img?: string; initials: string }[] = [
+  { line: "A much-needed 'been-there-done-that' perspective to many parts of our business.", author: "Scott Konopasek", role: "Co-founder & COO, Filament", initials: "SK" },
+  { line: "VJ is the best B2B marketer I've worked with.", author: "Marty Kratky-Katz", role: "Exited tech founder", img: "/testimonials/marty-kratky-katz-duo.png", initials: "MK" },
+  { line: "VJ performed every marketing work we needed until we could afford additional help.", author: "Trevor Thomas", role: "ex-OpenX/Experian/AT&T Revenue Exec", img: "/testimonials/trevor-thomas-duo.png", initials: "TT" },
+  { line: "He has the great ability to keep his head cool and bring a solutions-first mindset.", author: "Goswijn Thijssen", role: "ex-Google/Microsoft marketing executive", img: "/testimonials/goswijn-thijssen-duo.png", initials: "GT" },
 ];
 
 // Press data, ported verbatim from the archived site's portfolio.json.

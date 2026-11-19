@@ -30,7 +30,7 @@ End-to-end operation of a personal-to-studio transition. Content lives in `src/c
 
 ## Capabilities and Constraints
 
-Four lines of work are addressable: MediaContext (bench at `/mcp/`), Forward deployed marketer (retainer at `/fdm/`), Lab notes (MDX at `/notes/`), On record (press fields at `/record/`). Legacy paths `/gtm`, `/lab`, `/experiments` and `/published` 301. One interactive AI-driven benchmark teaser ships on the home page; its availability, keys and consent behavior are open decisions. Text ingested by robots must be HTML text, not canvas text. Evidence contains no testimonials and no metrics beyond cited public figures; nothing may be invented. Open decision: whether the archive resolves as aliases, verbatim posts or aggregated fields grouped by theme.
+Four lines of work are addressable: MediaContext (bench at `/mcp/`), Forward deployed marketer (retainer at `/fdm/`), Lab notes (MDX at `/notes/`), On record (press fields at `/record/`). Legacy paths `/gtm`, `/lab`, `/experiments` and `/published` 301. One interactive AI-driven benchmark teaser ships on the home page; its availability, keys and consent behavior are open decisions. Text ingested by robots must be HTML text, not canvas text. Testimonials are limited to four real quotes (Scott Konopasek, Marty Kratky-Katz, Trevor Thomas, Goswijn Thijssen), lifted verbatim; no metrics beyond cited public figures; nothing may be invented. Open decision: whether the archive resolves as aliases, verbatim posts or aggregated fields grouped by theme.
 
 ## Brand Commitments
 
@@ -38,7 +38,7 @@ The founder's byline history, published field work and archiving conventions are
 
 ## Evidence on Hand
 
-Career claims reference roles at Blockthrough, AdPushup, drbild.com, Adאופolis, Market and marketur.com, with revenue/user figures attributed to press releases and case studies rather than presented as audited performance. Press and research archive backing sits in `portfolio.json` (nine bylines, eight earned media, seven research citations, author archives, projects and investments) in `~/Developer/_archive/andorlabs-site-old/content/pages/`. No raw evidence-pack files are staged at the repo root; the archive JSON is the current source. Absent: testimonials, audited metrics, and any proof for the benchmark teaser beyond the prototype direction `.scratch/directions/c-cyanotype.html`.
+Career claims reference roles at Blockthrough, AdPushup, drbild.com, Adאופolis, Market and marketur.com, with revenue/user figures attributed to press releases and case studies rather than presented as audited performance. Press and research archive backing sits in `portfolio.json` (nine bylines, eight earned media, seven research citations, author archives, projects and investments) in `~/Developer/_archive/andorlabs-site-old/content/pages/`. No raw evidence-pack files are staged at the repo root; the archive JSON is the current source. Testimonials live in `TESTIMONIALS` in `src/data/site.ts` with sources noted. Absent: audited metrics, and any proof for the benchmark teaser beyond the prototype direction `.scratch/directions/c-cyanotype.html`.
 
 ## Product Principles
 

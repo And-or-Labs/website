@@ -2,6 +2,7 @@
 import Cta from "../components/Cta.astro";
 import Section from "../components/Section.astro";
 import Steps from "../components/Steps.astro";
+import Testimonials from "../components/Testimonials.astro";
 import { book, FDM as F } from "../data/site";
 import Page from "../layouts/Page.astro";
 
@@ -55,6 +56,8 @@ const pad = (n: number) => String(n).padStart(2, "0");
       ))}
     </ol>
   </Section>
+
+  <Testimonials />
 
   <Fragment slot="next">
     <p>{F.process}</p>

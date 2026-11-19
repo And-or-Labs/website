@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import Cta from "../components/Cta.astro";
 import NotePreview from "../components/NotePreview.astro";
 import Section from "../components/Section.astro";
+import Testimonials from "../components/Testimonials.astro";
 import { book, FDM, GRANTS, HOME } from "../data/site";
 import Sheet from "../layouts/Sheet.astro";
 
@@ -38,6 +39,8 @@ const latest = (await getCollection("blog", p => !p.data.draft)).sort((a, b) => 
 
   <Fragment slot="after">
     <div class="home-more">
+      <Testimonials />
+
       <Section id="transmissions" label="Latest transmissions" count={latest.length}>
         <div class="note-grid">
           {latest.map(p => (
