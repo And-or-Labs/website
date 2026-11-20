@@ -3,6 +3,8 @@ import { BOOKING_URL } from "../data/site";
 
 type BookingIntent = "fdm";
 type SiteEvent = "booking_started" | "newsletter_subscribed";
+type ToolEvent = "tool_result_shown" | "tool_email_opted_in";
+export type Tool = "can-it-run";
 type EventDetails = { intent?: BookingIntent; placement?: string };
 type EventProperties = Record<string, string>;
 type PostHogClient = {
@@ -25,8 +27,9 @@ declare global {
 const booking = new URL(BOOKING_URL);
 const placements = new Set([
   "home-bar", "fdm-bar", "fdm-hero", "fdm-offer", "fdm-next",
-  "homepage", "blog-index", "blog-post", "record", "footer", "unknown",
+  "homepage", "blog-index", "blog-post", "record", "footer", "can-it-run", "unknown",
 ]);
+const tools = new Set<string>(["can-it-run"]);
 const pending = new Set<number>();
 
 function clearPending() {
@@ -37,18 +40,31 @@ function clearPending() {
 export function trackSiteEvent(event: "newsletter_subscribed", details?: { placement?: string }): void;
 export function trackSiteEvent(event: "booking_started", details: { intent: BookingIntent; placement?: string }): void;
 export function trackSiteEvent(event: SiteEvent, details: EventDetails = {}): void {
-  if (!hasAnalyticsConsent()) return;
   if (event !== "booking_started" && event !== "newsletter_subscribed") return;
   if (event === "booking_started" && details.intent !== "fdm") return;
 
   const properties: EventProperties = {
     placement: details.placement && placements.has(details.placement) ? details.placement : "unknown",
+  };
+  if (event === "booking_started" && details.intent) properties.intent = details.intent;
+  captureWithConsent(event, properties);
+}
+
+/** Lead-magnet tools. One `tool` property on both events gives the signup rate per tool. */
+export function trackToolEvent(event: ToolEvent, tool: Tool, details: EventProperties = {}): void {
+  if (!tools.has(tool)) return;
+  captureWithConsent(event, { ...details, tool });
+}
+
+function captureWithConsent(event: string, details: EventProperties) {
+  if (!hasAnalyticsConsent()) return;
+  const properties: EventProperties = {
+    ...details,
     page_path: window.location.pathname,
     device_class: window.innerWidth < 768 ? "mobile" : window.innerWidth < 1024 ? "tablet" : "desktop",
     // Query strings and fragments can contain visitor-supplied data.
     $current_url: `${window.location.origin}${window.location.pathname}`,
   };
-  if (event === "booking_started" && details.intent) properties.intent = details.intent;
 
   const capture = (attempt: number) => {
     if (!hasAnalyticsConsent()) return;

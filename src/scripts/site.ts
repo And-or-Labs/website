@@ -1,7 +1,7 @@
 import { navigate } from "astro:transitions/client";
 import "./consent";
 
-import { trackSiteEvent } from "./analytics";
+import { trackSiteEvent, trackToolEvent, type Tool } from "./analytics";
 import { mountFigure, type FigName } from "./figure";
 
 type Figure = ReturnType<typeof mountFigure>;
@@ -75,6 +75,7 @@ function wireSubscribe() {
         if (res.ok && data.ok === true) {
           out.className = "ok"; out.textContent = "Subscribed. New notes only, weekly at most.";
           trackSiteEvent("newsletter_subscribed", { placement: form.dataset.subscribe });
+          if (form.dataset.tool) trackToolEvent("tool_email_opted_in", form.dataset.tool as Tool);
           form.reset();
         }
         else { out.className = "err"; out.textContent = data.error || "That didn't go through. Try again?"; }

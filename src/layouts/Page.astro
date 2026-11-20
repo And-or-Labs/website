@@ -22,8 +22,9 @@ interface Props {
   image?: string;
   type?: "website" | "article";
   publishedTime?: Date;
+  subscribe?: boolean;
 }
-const { n, heading, lede, title, description, crumb, here, spec, cta, secondary, fig, color, image, type, publishedTime } = Astro.props;
+const { n, heading, lede, title, description, crumb, here, spec, cta, secondary, fig, color, image, type, publishedTime, subscribe } = Astro.props;
 const m = MENU.find(x => x.n === n);
 const arrow = (c: { href: string; external?: boolean }) => (c.external || c.href.startsWith("http") ? "↗" : c.href.startsWith("#") ? "↓" : "→");
 ---
@@ -35,6 +36,7 @@ const arrow = (c: { href: string; external?: boolean }) => (c.external || c.href
   image={image}
   type={type}
   publishedTime={publishedTime}
+  subscribe={subscribe}
   variant="document"
 >
   <slot name="head" slot="head" />
