@@ -147,6 +147,14 @@ export const RECORD = {
 
 export const EXPERIMENTS = [
   {
+    name: "Can it run?",
+    file: "CANRUN.EXE",
+    body: "Pick an open model, a GPU or Mac, a context length and a quant. See whether it fits, how much spills to system RAM, and a rough decode speed in tokens per second.",
+    cta: "Check a build",
+    href: "/can-it-run/",
+    external: false,
+  },
+  {
     name: "Megafly",
     file: "MEGAFLY.EXE",
     body: "A Three.js fly at a laptop, driven by a computed replay of 1,045 real neurons from the MaleCNS connectome. It moves a paper ad budget between display, video and native. No returns are fabricated.",

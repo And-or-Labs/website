@@ -48,7 +48,7 @@ const LIST_BY_CATEGORY: Record<string, string> = {
 const ALL_LISTS = Object.values(LIST_BY_CATEGORY);
 
 /** Where the signup happened, so list growth is attributable per surface. */
-const ALLOWED_SOURCES = new Set(["homepage", "blog-post", "blog-index", "record", "footer", "unknown"]);
+const ALLOWED_SOURCES = new Set(["homepage", "blog-post", "blog-index", "record", "footer", "can-it-run", "unknown"]);
 
 /**
  * Deliberately permissive. Strict RFC 5322 matching rejects addresses that

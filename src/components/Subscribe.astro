@@ -1,11 +1,13 @@
 ---
-interface Props { source: "homepage" | "blog-post" | "blog-index" | "footer" | "record"; label?: string; }
-const { source, label = "Get new notes by email. Weekly at most, unsubscribe in one click." } = Astro.props;
+import type { Tool } from "../scripts/analytics";
+
+interface Props { source: "homepage" | "blog-post" | "blog-index" | "footer" | "record" | "can-it-run"; label?: string; tool?: Tool; }
+const { source, label = "Get new notes by email. Weekly at most, unsubscribe in one click.", tool } = Astro.props;
 const id = `sub-${source}`;
 ---
 <div class="sub">
   <label class="label" for={id}>{label}</label>
-  <form data-subscribe={source}>
+  <form data-subscribe={source} data-tool={tool}>
     <input id={id} name="email" type="email" required maxlength="254" autocomplete="email" placeholder="you@startup.com" aria-describedby={`${id}-status`} />
     <button type="submit">Subscribe</button>
   </form>

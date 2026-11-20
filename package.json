@@ -10,6 +10,7 @@
     "preview": "astro preview",
     "deploy": "npm run build && wrangler deploy",
     "test:subscribe": "node --experimental-strip-types --test tests/subscribe.test.mjs",
+    "test:canrun": "node --experimental-strip-types --test tests/canrun.test.mjs",
     "astro": "astro",
     "lint": "eslint . --fix",
     "format": "prettier -w .",

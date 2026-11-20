@@ -1,0 +1,78 @@
+---
+import Section from "../components/Section.astro";
+import Subscribe from "../components/Subscribe.astro";
+import Page from "../layouts/Page.astro";
+import { CONTEXTS, contextLabel, DEFAULTS, describe, HARDWARE, MODELS, QUANTS, RAM_GB } from "../lib/canrun";
+
+// The default build is rendered at build time, so the answer is there before any script runs.
+const d = describe(DEFAULTS);
+const unified = HARDWARE.find(h => h.id === DEFAULTS.hardware)?.unified;
+---
+<Page
+  n={2}
+  heading="Can it run?"
+  lede="Pick an open model, your hardware, a context length and a quant. See whether it fits, what spills to system RAM, and a rough decode speed."
+  title="Can it run? Local LLM fit and speed estimator"
+  description="Check whether an open-weight LLM fits on your GPU or Mac at a given context and quant, how much offloads to system RAM, and an estimated tokens per second."
+  crumb={{ href: "/notes/", label: "Transmissions" }}
+  subscribe={false}
+>
+  <Section id="build" label="Your build">
+    <form class="canrun" data-canrun>
+      <label><span class="label">Model</span>
+        <select name="model">{MODELS.map(m => <option value={m.id} selected={m.id === DEFAULTS.model}>{m.label}</option>)}</select>
+      </label>
+      <label><span class="label">Hardware</span>
+        <select name="hardware">{HARDWARE.map(h => <option value={h.id} selected={h.id === DEFAULTS.hardware}>{h.label}</option>)}</select>
+      </label>
+      <label><span class="label">System RAM</span>
+        <select name="ram" disabled={unified}>{RAM_GB.map(r => <option value={r} selected={r === DEFAULTS.ram}>{r} GB</option>)}</select>
+      </label>
+      <label><span class="label">Context</span>
+        <select name="ctx">{CONTEXTS.map(c => <option value={c} selected={c === DEFAULTS.ctx}>{contextLabel(c)} tokens</option>)}</select>
+      </label>
+      <label><span class="label">Quant</span>
+        <select name="quant">{QUANTS.map(q => <option value={q.id} selected={q.id === DEFAULTS.quant}>{q.label}</option>)}</select>
+      </label>
+    </form>
+  </Section>
+  <Section id="estimate" label="Estimate">
+    <div class="card verdict" data-verdict={d.verdict} data-result aria-live="polite" aria-atomic="true">
+      <p class="headline" data-k="headline">{d.headline}</p>
+      <dl class="facts">
+        <div><dt>Memory</dt><dd data-k="memory">{d.memory}</dd></div>
+        <div><dt>Weights</dt><dd data-k="weights">{d.weights}</dd></div>
+        <div><dt>KV cache</dt><dd data-k="kv">{d.kv}</dd></div>
+        <div><dt>On GPU</dt><dd data-k="onGpu">{d.onGpu}</dd></div>
+        <div><dt>Decode speed</dt><dd data-k="speed">{d.speed}</dd></div>
+      </dl>
+      <ul class="notes" data-k="notes">{d.notes.map(n => <li>{n}</li>)}</ul>
+    </div>
+    <p class="assume">An estimate for llama.cpp-style runtimes, not a benchmark. Decode speed assumes a full context window, 65% of peak memory bandwidth, an FP16 KV cache and dual-channel DDR5 for offloaded layers. Prompt processing is not included.</p>
+  </Section>
+  <Section id="email" label="Optional">
+    <Subscribe source="can-it-run" tool="can-it-run" label="Get new field notes by email, including updates to this estimator. The estimate above stays free either way." />
+  </Section>
+</Page>
+
+<script>
+  import "../scripts/canrun.ts";
+</script>
+
+<style>
+  .canrun { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 12px 16px; }
+  .canrun label { display: grid; gap: 6px; min-width: 0; }
+  .canrun select { min-height: 44px; padding: 0 10px; border: 1px solid var(--ink); border-radius: 0; background: var(--white); color: var(--ink); font: 14px var(--mono); }
+  .canrun select:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .canrun select:disabled { opacity: .5; }
+  .verdict { --c: var(--green); }
+  .verdict[data-verdict="offload"] { --c: var(--butter); }
+  .verdict[data-verdict="no"] { --c: var(--coral); }
+  .headline { font: 500 24px/1.2 var(--serif); letter-spacing: -.01em; text-wrap: balance; }
+  .verdict .facts { margin-top: 12px; }
+  .verdict dd { font-variant-numeric: tabular-nums; }
+  .notes { margin-top: 12px; padding-left: 16px; font-size: 14px; line-height: 1.45; color: var(--dim); }
+  .notes:empty { display: none; }
+  .notes li + li { margin-top: 6px; }
+  .assume { font-size: 13px; line-height: 1.5; color: var(--dim); max-width: var(--measure); text-wrap: pretty; }
+</style>
