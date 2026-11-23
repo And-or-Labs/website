@@ -314,21 +314,3 @@ export function facts(entityRaw: unknown, home: HomePage | null, firmo: Firmo, n
     countries,
   };
 }
-
-/** How many of the sheet's printable fields have data — the "N data
-    points" line in the run log. monthsSinceRaise is verdict-only, so it
-    does not count; name is identity, not a data point. */
-export function dataPoints(f: Facts): number {
-  let n = 0;
-  for (const v of [
-    f.oneLiner, f.city, f.country, f.founded, f.type, f.industry,
-    f.staff, f.hcYoY, f.sizeBand, f.revenue, f.revPerHead,
-    f.fundingTotal, f.latestRound, f.visitsMonthly, f.avgVisitSec,
-    f.traffic6mo, f.spark, f.stackCount, f.countries,
-  ]) {
-    if (v != null) n++;
-  }
-  if (f.stackTop.length) n++;
-  if (f.offices.length) n++;
-  return n;
-}
