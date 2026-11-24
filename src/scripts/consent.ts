@@ -26,27 +26,6 @@ let frame = 0;
 let preferencesOpen = false;
 let preferenceTrigger: HTMLElement | null = null;
 
-/** For telemetry only: distinguishes "said no" from "the banner never loaded". */
-export function consentState(): "granted" | "denied" | "unavailable" {
-  try {
-    const c = window.getCkyConsent?.();
-    if (!c) return "unavailable";
-    return c.categories?.analytics === true ? "granted" : "denied";
-  } catch {
-    return "unavailable";
-  }
-}
-
-/** Visitor identification (Snitcher) maps to CookieYes "advertisement", the
-    category GTM gates on ad_storage. Missing or unreadable means no. */
-export function hasMarketingConsent(): boolean {
-  try {
-    return window.getCkyConsent?.().categories?.advertisement === true;
-  } catch {
-    return false;
-  }
-}
-
 /** A missing or unreadable consent decision never grants analytics consent. */
 export function hasAnalyticsConsent(): boolean {
   try {
