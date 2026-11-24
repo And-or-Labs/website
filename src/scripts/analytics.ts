@@ -11,7 +11,6 @@ type PostHogClient = {
     transport: "sendBeacon";
     send_instantly: true;
   }) => unknown;
-  captureException?: (error: unknown, properties?: Record<string, unknown>) => unknown;
   set_config?: (config: Record<string, unknown>) => void;
   has_opted_out_capturing?: () => boolean;
 };
@@ -117,25 +116,3 @@ function enableExtras(tries = 0) {
   try { c.set_config?.({ capture_exceptions: true, capture_dead_clicks: true }); } catch { /* optional */ }
 }
 enableExtras();
-
-/** Operational telemetry (no visitor data in the properties). Respects the
-    SDK's own opt-out; waits up to ~10s for GTM to load PostHog. */
-export function trackOps(event: string, props: Record<string, string | number | boolean | null>, attempt = 0): void {
-  const c = ph();
-  if (!c) {
-    if (attempt < 20) window.setTimeout(() => trackOps(event, props, attempt + 1), 500);
-    return;
-  }
-  try {
-    if (c.has_opted_out_capturing?.()) return;
-    c.capture?.(event, { ...props, $current_url: `${location.origin}${location.pathname}` });
-  } catch { /* optional */ }
-}
-
-export function trackError(error: unknown, props: Record<string, string | number | boolean | null>): void {
-  const c = ph();
-  try {
-    if (!c || c.has_opted_out_capturing?.()) return;
-    c.captureException?.(error, props);
-  } catch { /* optional */ }
-}

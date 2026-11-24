@@ -27,7 +27,7 @@ Consult these guides before working on related tasks:
 - Subscribe posts to `src/pages/api/subscribe.ts` (Loops).
 - Dev: `npm run dev` (Node >= 22.23.4). Deploy: `npm run deploy` (build + `wrangler deploy`). Preview a build without promoting it: `npm run build && npx wrangler versions upload`.
 - Old site content (source of truth for legacy copy and press): `~/Developer/_archive/andorlabs-site-old/content/pages/*.json`. `portfolio.json` holds 9 bylines, 8 earned media, 7 research citations, author archives, projects and investments. Check it before calling any content missing.
-- Analytics: GTM container GTM-MFGN59WT is injected at the Cloudflare edge (not in the Astro source); it loads PostHog (default project), Snitcher and CookieYes. `src/scripts/analytics.ts` switches on PostHog exception autocapture + dead clicks once GTM has loaded the SDK, and `trackOps()` sends operational events. The home brief emits one `brief_run` per run (kind, trigger, consent, snitcher, stage, outcome, http, exa/jev, timings; no visitor identifiers) plus `brief_restored`; failures also go to Error Tracking via `captureException`.
+- Analytics: GTM container GTM-MFGN59WT is injected at the Cloudflare edge (not in the Astro source); it loads PostHog (default project), Snitcher and CookieYes. `src/scripts/analytics.ts` switches on PostHog exception autocapture + dead clicks once GTM has loaded the SDK.
 - Production deploy: `npm run deploy` from `main`.
 
 <!-- routingcat -->
